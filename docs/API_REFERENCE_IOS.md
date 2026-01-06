@@ -1,4 +1,4 @@
-# MemoTalk SDK for Android - API Reference
+# MemoTalk SDK for iOS - API Reference
 
 ---
 
@@ -6,36 +6,35 @@
 
 The main entry point for interacting with the SDK.
 
-### `initialize(context: Context, config: SDKConfig): Result<Unit, PlaudError>`
+### `initialize(config: SDKConfig) -> Result<Void, PlaudError>`
 
-Initializes the SDK. This must be called once, typically in your `Application` class, before any other SDK methods are used.
+Initializes the SDK. This must be called once, typically in your `AppDelegate`, before any other SDK methods are used.
 
 -   **Parameters**:
-    -   `context`: The application context.
     -   `config`: An `SDKConfig` object containing your app key and secret.
 -   **Returns**: A `Result` object indicating success or failure.
 
-### `getInstance(): MemoTalkSDKImpl?`
+### `getInstance() -> MemoTalkSDKImpl?`
 
 Gets the singleton instance of the SDK implementation.
 
-### `getDeviceManager(): DeviceManager?`
+### `getDeviceManager() -> DeviceManager?`
 
 Gets the `DeviceManager` instance for device scanning and connection.
 
-### `getRecordingManager(): RecordingManager?`
+### `getRecordingManager() -> RecordingManager?`
 
 Gets the `RecordingManager` instance for controlling recordings.
 
-### `getFileManager(): FileManager?`
+### `getFileManager() -> FileManager?`
 
 Gets the `FileManager` instance for file operations.
 
-### `getOTAManager(): OTAManager?`
+### `getOTAManager() -> OTAManager?`
 
 Gets the `OTAManager` instance for firmware updates.
 
-### `getTranscriptionManager(): TranscriptionManager?`
+### `getTranscriptionManager() -> TranscriptionManager?`
 
 Gets the `TranscriptionManager` instance for AI services.
 
@@ -49,28 +48,28 @@ Releases all resources used by the SDK. This should be called when your app is s
 
 Manages device discovery and connection.
 
-### `startScan(): Result<List<Device>, PlaudError>`
+### `startScan() async -> Result<[Device], PlaudError>`
 
 Starts scanning for nearby MemoTalk devices.
 
--   **Returns**: A `Result` containing a list of discovered `Device` objects.
+-   **Returns**: A `Result` containing an array of discovered `Device` objects.
 
-### `stopScan(): Result<Unit, PlaudError>`
+### `stopScan()`
 
 Stops the device scan.
 
-### `connect(device: Device): Result<Unit, PlaudError>`
+### `connect(device: Device) async -> Result<Void, PlaudError>`
 
 Connects to a specific device.
 
 -   **Parameters**:
     -   `device`: The `Device` object to connect to.
 
-### `disconnect(device: Device): Result<Unit, PlaudError>`
+### `disconnect(device: Device) async -> Result<Void, PlaudError>`
 
 Disconnects from a device.
 
-### `getDeviceStatus(device: Device): Result<DeviceStatus, PlaudError>`
+### `getDeviceStatus(device: Device) async -> Result<DeviceStatus, PlaudError>`
 
 Gets the real-time status of a device (battery, storage, etc.).
 
@@ -80,19 +79,19 @@ Gets the real-time status of a device (battery, storage, etc.).
 
 Controls the recording functionality of the device.
 
-### `startRecording(device: Device): Result<Unit, PlaudError>`
+### `startRecording(device: Device) async -> Result<Void, PlaudError>`
 
 Starts a new recording on the device.
 
-### `stopRecording(device: Device): Result<Unit, PlaudError>`
+### `stopRecording(device: Device) async -> Result<Void, PlaudError>`
 
 Stops the current recording.
 
-### `pauseRecording(device: Device): Result<Unit, PlaudError>`
+### `pauseRecording(device: Device) async -> Result<Void, PlaudError>`
 
 Pauses the current recording.
 
-### `getRecordingList(device: Device): Result<List<Recording>, PlaudError>`
+### `getRecordingList(device: Device) async -> Result<[Recording], PlaudError>`
 
 Retrieves a list of all recordings stored on the device.
 
@@ -102,16 +101,16 @@ Retrieves a list of all recordings stored on the device.
 
 Handles file-related operations.
 
-### `downloadRecording(device: Device, recording: Recording, progressCallback: (Int) -> Unit): Result<File, PlaudError>`
+### `downloadRecording(device: Device, recording: Recording, progressCallback: @escaping (Int) -> Void) async -> Result<URL, PlaudError>`
 
 Downloads a recording file from the device to the app's local cache.
 
 -   **Parameters**:
     -   `recording`: The `Recording` to download.
-    -   `progressCallback`: A lambda to receive download progress updates (0-100).
--   **Returns**: A `Result` containing the downloaded `File` object.
+    -   `progressCallback`: A closure to receive download progress updates (0-100).
+-   **Returns**: A `Result` containing the URL of the downloaded file.
 
-### `deleteRecording(device: Device, recording: Recording): Result<Unit, PlaudError>`
+### `deleteRecording(device: Device, recording: Recording) async -> Result<Void, PlaudError>`
 
 Deletes a recording from the device.
 
@@ -121,11 +120,11 @@ Deletes a recording from the device.
 
 Manages firmware updates.
 
-### `checkFirmwareVersion(device: Device): Result<String, PlaudError>`
+### `checkFirmwareVersion(device: Device) async -> Result<String, PlaudError>`
 
 Checks the current firmware version of the device.
 
-### `startOTAUpdate(device: Device, firmwareFile: File, progressCallback: (Int) -> Unit): Result<Unit, PlaudError>`
+### `startOTAUpdate(device: Device, firmwareFile: URL, progressCallback: @escaping (Int) -> Void) async -> Result<Void, PlaudError>`
 
 Starts the Over-The-Air firmware update process.
 
@@ -135,11 +134,11 @@ Starts the Over-The-Air firmware update process.
 
 Integrates with cloud-based AI services.
 
-### `enableRealtimeTranscription(device: Device): Result<Unit, PlaudError>`
+### `enableRealtimeTranscription(device: Device) async -> Result<Void, PlaudError>`
 
 Enables the real-time transcription feature.
 
-### `transcribeRecording(device: Device, recording: Recording): Result<String, PlaudError>`
+### `transcribeRecording(device: Device, recording: Recording) async -> Result<String, PlaudError>`
 
 Submits a recording to the cloud for transcription.
 
